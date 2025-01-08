@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "845266883335",
+    "project_id": "coop-faae3",
+    "storage_bucket": "coop-faae3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845266883335:android:14a874660102ffca89eba2",
+        "android_client_info": {
+          "package_name": "com.coop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkeZsjL-s9008oGjxKSEr4aCofGHG8UQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
