@@ -1,0 +1,6 @@
+export const Route = {
+    APPSTACK: "AFTERLOGIN",
+    AUTHSTACK: "BEFORELOGIN",
+    IPLOGIN: "IPLOGIN",
+    UNATTENDED: "UNATTENDED",
+}
