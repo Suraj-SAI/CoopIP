@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { navigationRef } from '../services/navigationService';
@@ -7,21 +7,24 @@ import BeforeLoginNavigator from './beforeLogin';
 import AfterLoginNavigator from './afterLogin';
 import * as Storage from '../helper/AsyncStorageConfig';
 import Toast from 'react-native-simple-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { ipLoginAction } from '../redux/actions/loginAction';
 
 
 const Stack = createNativeStackNavigator();
 
 const Navigator = () => {
-    const [loggedIn, setLoggedIn] = useState<boolean>(false)
+    const dispatch = useDispatch<any>()
+    const { isLoggedIn } = useSelector((store: any) => store.loginReducer)
 
     const getDataAndLogin = async () => {
         try {
             const uniqueId = await Storage.getData("uniqueId");
             const token = await Storage.getData("token");
-            const ip = await Storage.getData("ipAddress");
-
-            if (uniqueId && token && ip) {
-                await loginWithIp(uniqueId, token, ip);
+            console.log(uniqueId , token , "3 data");
+            
+            if (uniqueId && token) {
+                await loginWithIp(uniqueId, token);
             } else {
                 Toast.show('Missing required data for login', 2000);
             }
@@ -31,19 +34,20 @@ const Navigator = () => {
         }
     };
 
-    const loginWithIp = async (uniqueId: any, token: any, ip: any) => {
+    const loginWithIp = async (uniqueId: any, token: any) => {
         try {
-            const data = {
-                user_id: uniqueId,
-                firebase_token: token,
-                ip_address: ip,
-                company_name: "Coop"
+            try {
+                await dispatch(ipLoginAction(uniqueId, token))
+            } catch (error) {
+                Toast.show('Ip Login Failed', 2000, {
+                    backgroundColor: 'red',
+                });
             }
-            console.log(data, "Data");
-            Toast.show('Data', 2000);
 
         } catch (error) {
-            Toast.show('Invalid Ip Address', 2000);
+            Toast.show('Invalid Ip Address', 2000, {
+                backgroundColor: 'red',
+            });
         }
     }
 
@@ -58,7 +62,7 @@ const Navigator = () => {
                 screenOptions={{ headerShown: false }}
             >
                 {
-                    loggedIn ? (
+                    isLoggedIn ? (
                         <Stack.Screen
                             name={Route.APPSTACK}
                             component={AfterLoginNavigator}

@@ -53,10 +53,23 @@ public class MainActivity extends ReactActivity {
       notificationChannel.setVibrationPattern(new long[]{400, 400});
       notificationChannel.setLockscreenVisibility(androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC);
 
+      // Create the second notification channel (update_channel)
+      NotificationChannel updateChannel = new NotificationChannel(
+            "update_channel",  // Notification channel ID
+            "coop",  // Notification channel name
+            NotificationManager.IMPORTANCE_NONE  // Importance level (low for silent notifications)
+        );
+      updateChannel.setShowBadge(false); // Do not show badges for this channel
+      updateChannel.setDescription("Used for app updates or background notifications");
+      updateChannel.enableVibration(false); // No vibration
+      updateChannel.setSound(null, null); // No sound
+      updateChannel.setLockscreenVisibility(androidx.core.app.NotificationCompat.VISIBILITY_SECRET);
+
       // Register the notification channel with the system
       NotificationManager manager = getSystemService(NotificationManager.class);
       if (manager != null) {
         manager.createNotificationChannel(notificationChannel);
+        manager.createNotificationChannel(updateChannel);
       }
     }
   }
