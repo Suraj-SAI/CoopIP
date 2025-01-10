@@ -5,8 +5,6 @@ import messaging from '@react-native-firebase/messaging';
 export const getId = async () => {
     try {
         let id = await DeviceInfo.getUniqueId();
-        console.log(id, "DevieId");
-
         await Storage.saveData("uniqueId", id);
     } catch (error) {
         console.error("Error getting unique ID:", error);

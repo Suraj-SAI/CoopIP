@@ -4,6 +4,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor : "#fff"
     },
     container1: {
         flex: 0.1,
@@ -14,7 +15,8 @@ export const styles = StyleSheet.create({
     },
     cctvFont: {
         fontSize: hp(3),
-        fontWeight : "bold"
+        fontWeight : "bold",
+        color : "#000"
     },
     userImage : {
        height : hp(6),

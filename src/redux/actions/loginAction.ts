@@ -37,6 +37,9 @@ export const ipLoginAction = (retryCount = 3, retryDelay = 5000) => {
                         backgroundColor: "red"
                     });
                     dispatch({ type: LOGIN_ERROR });
+                    dispatch({
+                        type : LOGOUT_SUCCESS
+                    })
                 }
             }
         };
