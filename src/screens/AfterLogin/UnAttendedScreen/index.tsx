@@ -1,26 +1,38 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
-import { sendNotification } from '../../../redux/actions/loginAction'
+import { View, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native'
+import React, { useState } from 'react'
+import { styles } from './styles'
+import { profile } from '../../../utils/images'
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutAction } from '../../../redux/actions/loginAction';
 
-const UnAttended = () => {
+const HomePage = () => {
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const dispatch = useDispatch<any>()
+  const { userData } = useSelector((store: any) => store.loginReducer);
+  let userId = userData?.data?.user_id;
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={sendNotification} style={styles.button}>
-        <Text>Send Notification</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container1}>
+        <Text style={styles.cctvFont}>CCTV Alerts</Text>
+        <TouchableOpacity onPress={() => setShowPopup(!showPopup)}>
+          <Image source={profile} style={styles.userImage} />
+        </TouchableOpacity>
+
+        {showPopup && (
+          <View style={styles.popup}>
+            <TouchableOpacity onPress={() => dispatch(logoutAction(userId))}>
+              <Text style={styles.popupText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.container2}>
+      </View>
+    </SafeAreaView>
   )
 }
 
-export default UnAttended
+export default HomePage
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  button: {
-    backgroundColor: "red"
-  }
-})

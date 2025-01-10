@@ -1,30 +1,24 @@
-import { PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
 import React, { useCallback, useEffect } from 'react';
 import messaging from '@react-native-firebase/messaging';
 import ForegroundHandler from './src/helper/ForgroundHelper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import DeviceInfo from 'react-native-device-info';
 import Navigator from './src/navigation/navigator';
 import * as Storage from './src/helper/AsyncStorageConfig';
 import { Provider } from "react-redux"
 import { store } from './src/redux/store';
 import { ForegroundHandler2 } from './src/helper/ForegroundHelper2';
+import { getId, pushNotification } from './src/utils/public';
+import ConnectivityWrapper from './src/components/ConnetctionWrapper';
 
 const App = () => {
 
-  const getId = useCallback(async () => {
-    try {
-      let id = await DeviceInfo.getUniqueId();
-      await Storage.saveData("uniqueId", id);
-    } catch (error) {
-      console.error("Error getting unique ID:", error);
-    }
-  }, []);
-
   useEffect(() => {
-    PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-    );
+    if (Platform.OS === 'android' && Platform.Version >= 23) {
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
+    }
 
     pushNotification();
     getId();
@@ -63,23 +57,14 @@ const App = () => {
     return unsubscribe;
   }, []);
 
-  const pushNotification = useCallback(async () => {
-    try {
-      let fcmToken = await messaging().getToken();
-      if (fcmToken) {
-        await Storage.saveData("token", fcmToken);
-      }
-    } catch (error) {
-      console.error("Error getting FCM token:", error);
-    }
-  }, []);
-
   return (
-    <Provider store={store}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Navigator />
-      </GestureHandlerRootView>
-    </Provider>
+    <ConnectivityWrapper>
+      <Provider store={store}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Navigator />
+        </GestureHandlerRootView>
+      </Provider>
+    </ConnectivityWrapper>
   );
 };
 
