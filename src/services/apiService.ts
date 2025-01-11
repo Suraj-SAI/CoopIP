@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASE_URL = "https://api.saivalentine.com";
+export const BASE_URL = "https://coopapi.saivalentine.com";
 
 export const AxiosInstance = axios.create({
     baseURL: BASE_URL,

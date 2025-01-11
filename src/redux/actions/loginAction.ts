@@ -21,7 +21,7 @@ export const ipLoginAction = (retryCount = 3, retryDelay = 5000) => {
                         type: LOGIN_SUCCESS,
                         payload: response?.data,
                     });
-                    Toast.show("Login Success", 2000, {
+                    Toast.show("Login Success !!!", 2000, {
                         backgroundColor: "green"
                     });
                 } else {
@@ -33,7 +33,7 @@ export const ipLoginAction = (retryCount = 3, retryDelay = 5000) => {
                     await new Promise(resolve => setTimeout(resolve, retryDelay));
                     return fetchAndLogin();
                 } else {
-                    Toast.show("Invalid Ip Adress", 2000, {
+                    Toast.show("Invalid Ip Adress !!!", 2000, {
                         backgroundColor: "red"
                     });
                     dispatch({ type: LOGIN_ERROR });
@@ -46,6 +46,7 @@ export const ipLoginAction = (retryCount = 3, retryDelay = 5000) => {
         await fetchAndLogin();
     };
 };
+
 
 export const logoutAction = (id: any) => {
     return async (dispatch: any) => {

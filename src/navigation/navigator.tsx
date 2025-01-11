@@ -47,7 +47,7 @@ const Navigator = () => {
 
     if (isLoading) {
         return (
-            <LoaderScreen />
+            <LoaderScreen visible={isLoading}/>
         );
     }
 

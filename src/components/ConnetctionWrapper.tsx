@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 interface ConnectivityWrapperProps {
   children: React.ReactNode;
@@ -47,8 +48,8 @@ const styles = StyleSheet.create({
     zIndex: 1000, // Ensure it appears on top of everything
   },
   offlineText: {
-    color: 'white',
-    fontSize: 18,
+    color: 'red',
+    fontSize: hp(2.5),
     fontWeight: 'bold',
     textAlign: 'center',
     paddingHorizontal: 20,

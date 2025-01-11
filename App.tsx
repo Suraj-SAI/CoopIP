@@ -9,6 +9,7 @@ import { store } from './src/redux/store';
 import { ForegroundHandler2 } from './src/helper/ForegroundHelper2';
 import { getId, pushNotification } from './src/utils/public';
 import ConnectivityWrapper from './src/components/ConnetctionWrapper';
+import SoundPlayer from './src/components/SoundPlayer';
 
 const App = () => {
 
@@ -60,9 +61,11 @@ const App = () => {
   return (
     <ConnectivityWrapper>
       <Provider store={store}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <Navigator />
-        </GestureHandlerRootView>
+        <SoundPlayer>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <Navigator />
+          </GestureHandlerRootView>
+        </SoundPlayer>
       </Provider>
     </ConnectivityWrapper>
   );
