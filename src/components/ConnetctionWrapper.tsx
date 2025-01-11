@@ -21,12 +21,14 @@ const ConnectivityWrapper: React.FC<ConnectivityWrapperProps> = ({ children }) =
 
   return (
     <SafeAreaView style={styles.container}>
+      {children}
       {isOffline && (
-        <View style={styles.offlineBanner}>
-          <Text style={styles.offlineText}>You are offline. Please check your internet connection.</Text>
+        <View style={styles.offlineOverlay}>
+          <Text style={styles.offlineText}>
+            You are offline. Please check your internet connection.
+          </Text>
         </View>
       )}
-      {children}
     </SafeAreaView>
   );
 };
@@ -37,14 +39,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  offlineBanner: {
-    backgroundColor: 'red',
-    padding: 10,
-    alignItems: 'center',
+  offlineOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black background
     justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000, // Ensure it appears on top of everything
   },
   offlineText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingHorizontal: 20,
   },
 });

@@ -4,7 +4,6 @@ import messaging from '@react-native-firebase/messaging';
 import ForegroundHandler from './src/helper/ForgroundHelper';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Navigator from './src/navigation/navigator';
-import * as Storage from './src/helper/AsyncStorageConfig';
 import { Provider } from "react-redux"
 import { store } from './src/redux/store';
 import { ForegroundHandler2 } from './src/helper/ForegroundHelper2';
@@ -56,6 +55,7 @@ const App = () => {
 
     return unsubscribe;
   }, []);
+
 
   return (
     <ConnectivityWrapper>

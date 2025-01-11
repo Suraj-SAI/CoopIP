@@ -5,7 +5,7 @@ export async function ForegroundHandler2(data: any, state: string) {
 
     const channelId = await notifee.createChannel({
         id: 'update_channel',
-        name: 'coop',
+        name: 'CCTV Alerts',
         importance: AndroidImportance.NONE,
     });
 

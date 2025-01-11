@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     },
     userImage : {
        height : hp(6),
-       width : wp(13)
+       width : hp(6)
     },
     container2: {
         flex: 0.9
@@ -43,6 +43,6 @@ export const styles = StyleSheet.create({
     popupText: {
         fontSize: hp(2),
         marginBottom: 5,
-        color: "#000",
+        color: "red",
     },
 })

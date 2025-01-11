@@ -34,7 +34,7 @@ public class MainActivity extends ReactActivity {
       // Create a notification channel
       NotificationChannel notificationChannel = new NotificationChannel(
           "default_channel",  // Replace with your notification channel name
-          "coop",              // Replace with your app name
+          "CCTV Alerts",              // Replace with your app name
           NotificationManager.IMPORTANCE_HIGH
       );
       notificationChannel.setShowBadge(true);
@@ -56,7 +56,7 @@ public class MainActivity extends ReactActivity {
       // Create the second notification channel (update_channel)
       NotificationChannel updateChannel = new NotificationChannel(
             "update_channel",  // Notification channel ID
-            "coop",  // Notification channel name
+            "CCTV Alerts",  // Notification channel name
             NotificationManager.IMPORTANCE_NONE  // Importance level (low for silent notifications)
         );
       updateChannel.setShowBadge(false); // Do not show badges for this channel
