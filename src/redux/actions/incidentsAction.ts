@@ -22,6 +22,24 @@ export const incidentList = (id: any) => {
     }
 }
 
+export const incidentListReload = (id: any) => {
+    return async (dispatch: any) => {
+        try {
+            const response = await AxiosInstance.post(`/get_active_theft_detail_new?user_id=${id}&background_status=0`);            
+            if (response?.status == 200) {
+                dispatch({
+                    type: INCIDENTS_SUCCESS,
+                    payload: response?.data?.data
+                })
+            }
+        } catch (error) {
+            dispatch({
+                type: INCIDENTS_ERROR,
+            })
+        }
+    }
+}
+
 export const attendedIncidentsList = (id: any) => {
     return async (dispatch: any) => {
         try {

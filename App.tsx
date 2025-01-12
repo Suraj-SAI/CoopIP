@@ -10,6 +10,7 @@ import { ForegroundHandler2 } from './src/helper/ForegroundHelper2';
 import { getId, pushNotification } from './src/utils/public';
 import ConnectivityWrapper from './src/components/ConnetctionWrapper';
 import SoundPlayer from './src/components/SoundPlayer';
+import { ToastProvider } from 'react-native-toast-notifications'
 
 const App = () => {
 
@@ -62,9 +63,11 @@ const App = () => {
     <ConnectivityWrapper>
       <Provider store={store}>
         <SoundPlayer>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <Navigator />
-          </GestureHandlerRootView>
+          <ToastProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <Navigator />
+            </GestureHandlerRootView>
+          </ToastProvider>
         </SoundPlayer>
       </Provider>
     </ConnectivityWrapper>

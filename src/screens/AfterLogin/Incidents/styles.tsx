@@ -27,7 +27,8 @@ export const styles = StyleSheet.create({
    renderComponentImageBox: {
       borderColor: "red",
       borderWidth: hp(0.5),
-      marginVertical: hp(1)
+      marginVertical: hp(1),
+      marginHorizontal: wp(2)
    },
    zoomImageContainer: {
       position: "absolute",
@@ -47,4 +48,14 @@ export const styles = StyleSheet.create({
 
    listContainer: { marginBottom: 20, padding: 10 },
    sectionHeader: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
+   vidoeRenderer: {
+      flex: 1,
+      height: hp(25),
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'black',
+      marginHorizontal: wp(2),
+      borderColor: "red",
+      borderWidth: hp(0.5),
+   }
 })
