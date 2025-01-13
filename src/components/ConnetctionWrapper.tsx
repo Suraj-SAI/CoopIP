@@ -53,5 +53,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     paddingHorizontal: 20,
+    backgroundColor :"#fffF",
+    paddingVertical : hp(5)
   },
 });

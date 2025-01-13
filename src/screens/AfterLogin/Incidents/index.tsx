@@ -66,7 +66,7 @@ const Incidents = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
             if (index < incidentsData?.length) {
-              return <RenderIncidentItem item={item} index={index} videoStatusMap={videoStatusMap} toggleVideoStatus={toggleVideoStatus} incidentsData={incidentsData} />
+              return <RenderIncidentItem item={item} index={index} videoStatusMap={videoStatusMap} toggleVideoStatus={toggleVideoStatus} />
             } else {
               return <RenderAttendedItem item={item} index={index - incidentsData?.length} attendedListData={attendedListData} />
             }

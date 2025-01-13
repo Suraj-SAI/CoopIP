@@ -5,49 +5,50 @@ import { navigate } from "../services/navigationService";
 import { Route } from "../utils/routes";
 import { clockImage, squareImage } from "../utils/images";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { useState } from "react";
-import { incidentListReload } from "../redux/actions/incidentsAction";
+import { useEffect, useState } from "react";
+import { incidentList, incidentListReload } from "../redux/actions/incidentsAction";
 import { useDispatch, useSelector } from "react-redux";
 import { BOTTOMATTENDEDSHEETOPEN, BOTTOMDISMISSSHEETOPEN } from "../redux/types";
 
-export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoStatus, incidentsData }: any) => {
+export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoStatus }: any) => {
     const toast = useToast();
     const uniqueId = item?.id || `${item.section}_${index}`;
     const videoStatus = videoStatusMap[uniqueId] || false;
     const dispatch = useDispatch<any>()
     const { userData } = useSelector((store: any) => store.loginReducer);
+    const { incidentsData } = useSelector((store: any) => store.incidentReducer);
+
     let userId = userData?.data?.user_id;
-    const [fetchingStatus, setFetchingStatus] = useState<{ [key: string]: number }>({});
+    const [counter, setCounter] = useState<number>(0);
+    const [isRunning, setIsRunning] = useState<boolean>(false);
+    const [fetchingId, setFetchingId] = useState(0)
 
-    const autoReload = async (index: any) => {
-        if (!incidentsData[index]?.video) {
-            setFetchingStatus((prevStatus) => ({
-                ...prevStatus,
-                [index]: (prevStatus[index] || 0) + 1,
-            }));
-
-            try {
-                await dispatch(incidentListReload(userId));
-
-                if (incidentsData[index]?.video) {
-                    toast.show("Video Found Successfully...", {
-                        type: "success",
-                        placement: "bottom",
-                        duration: 2000,
-                        animationType: "slide-in",
-                    });
-
-                    setFetchingStatus((prevStatus) => ({
-                        ...prevStatus,
-                        [index]: undefined,
-                    }));
-                } else {
-                    setTimeout(() => autoReload(index), 2000);
-                }
-            } catch (error) {
-                console.error("Error reloading incident:", error);
-            }
+    useEffect(() => {
+        let interval: any;
+        if (isRunning) {
+            interval = setInterval(() => {
+                dispatch(incidentListReload(userId))
+                setCounter(prev => prev + 1);
+            }, 2000);
         }
+
+        return () => clearInterval(interval);
+    }, [isRunning]);
+
+    useEffect(() => {
+        const temp = incidentsData ?? []
+        const selected = temp.find((item: any) => item?.theft_id == fetchingId)
+        if (selected?.video) {
+            stop()
+        }
+    }, [incidentsData])
+
+    const start = (id: any) => {
+        setFetchingId(id);
+        setIsRunning(true);
+    };
+    const stop = () => {
+        setIsRunning(false);
     };
 
     return (
@@ -72,8 +73,8 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
                         }
                         disableBack={true}
                         disableVolume={true}
-                        paused={true}
                         disableFullscreen={false}
+                        repeat={true}
                         rate={3.0}
                         onEnterFullscreen={() => navigate(Route.FULLSCREENVIDEO, { videoUri: item?.video })}
                     />
@@ -112,17 +113,15 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
 
                 {incidentsData[index]?.video === null && (
                     <TouchableOpacity onPress={() => {
-                        autoReload(index)
+                        start(item?.theft_id)
                     }}>
                         <Text
                             style={[
                                 styles.belowImageTextReload,
-                                fetchingStatus[index] !== undefined && { color: "red" },
+                                fetchingId === item?.theft_id && { color: "red" },
                             ]}
                         >
-                            {fetchingStatus[index] !== undefined
-                                ? `Fetching... (${fetchingStatus[index]})`
-                                : "Reload"}
+                            {fetchingId === item?.theft_id ? `Fetching... ${counter}` : "Reload"}
                         </Text>
                     </TouchableOpacity>
                 )}
@@ -131,13 +130,13 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
             <View style={styles.belowTextButtons}>
                 <TouchableOpacity style={styles.buttonLeft} onPress={() => dispatch({
                     type: BOTTOMDISMISSSHEETOPEN,
-                    payload : item?.theft_id
+                    payload: item?.theft_id
                 })}>
                     <Text style={styles.buttonLefthText}>Dismiss</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonRight} onPress={() => dispatch({
                     type: BOTTOMATTENDEDSHEETOPEN,
-                    payload : item?.theft_id
+                    payload: item?.theft_id
                 })}>
                     <Text style={styles.buttonRightText}>Attend</Text>
                 </TouchableOpacity>
