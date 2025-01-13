@@ -8,8 +8,10 @@ import Incidents from '../Incidents'
 import LiveStatus from '../LiveStatus';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Dimensions } from 'react-native';
-import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import DeviceInfo from 'react-native-device-info';
+import AttendBottomSheet from '../../../components/AttendBottomSheet'
+import DismissBottomSheet from '../../../components/DismissBottomSheet'
 
 const initialLayout = { width: Dimensions.get('window').width };
 
@@ -20,6 +22,9 @@ const HomePage = () => {
   const [index, setIndex] = useState(0);
   const [deviceVersion, setDeviceVersion] = useState("");
   let userId = userData?.data?.user_id;
+  const { incidentsData } = useSelector((store: any) => store.incidentReducer);
+  let incidentsCounts = incidentsData?.length;
+  const { attendedOpen, unAttendedOpen } = useSelector((store: any) => store?.bottomeSheetReducer);
 
   const getAppVersion = async () => {
     const version = await DeviceInfo.getVersion();
@@ -67,12 +72,32 @@ const HomePage = () => {
             {props.navigationState.routes.map((route, i) => (
               <TouchableOpacity
                 key={i}
-                style={{ flex: 1, padding: 10, alignItems: 'center', backgroundColor: i === props.navigationState.index ? '#f3f3f3' : '#fff' , borderTopLeftRadius : wp(3) , borderTopRightRadius : wp(3) }}
+                style={{ flex: 1, padding: 10, alignItems: 'center', backgroundColor: i === props.navigationState.index ? '#f3f3f3' : '#fff', borderTopLeftRadius: wp(3), borderTopRightRadius: wp(3) }}
                 onPress={() => props.jumpTo(route.key)}
               >
-                <Text style={{ color: '#000', fontSize: hp(2.3) }}>
-                  {route.title}
-                </Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={{ color: '#000', fontSize: hp(2.3) }}>
+                    {route.title}
+                  </Text >
+
+                  {route?.title === "Incidents" && incidentsCounts > 0 && (
+                    <View
+                      style={{
+                        backgroundColor: "red",
+                        marginLeft: wp(2),
+                        width: wp(6),
+                        height: wp(6),
+                        borderRadius: wp(3),
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text style={{ color: '#fff', fontSize: hp(1.5), fontWeight: "bold" }}>
+                        {incidentsCounts}
+                      </Text>
+                    </View>
+                  )}
+                </View>
               </TouchableOpacity>
             ))}
             <View
@@ -88,6 +113,8 @@ const HomePage = () => {
           </View>
         )}
       />
+      <AttendBottomSheet isVisible={attendedOpen} />
+      <DismissBottomSheet isVisible={unAttendedOpen} />
     </SafeAreaView>
   )
 }

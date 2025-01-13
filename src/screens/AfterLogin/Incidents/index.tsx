@@ -6,6 +6,7 @@ import { styles } from "./styles";
 import LoaderScreen from '../../../components/LoaderScreen';
 import { RenderIncidentItem } from '../../../components/RenderIncidentItem';
 import { RenderAttendedItem } from '../../../components/RenderAttendedItem';
+import ModalLoader from '../../../components/ModalLoader';
 
 const Incidents = () => {
   const { incidentsData, isLoading, attendedListData } = useSelector((store: any) => store.incidentReducer);
@@ -14,6 +15,8 @@ const Incidents = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const userId = userData?.data?.user_id;
   const [videoStatusMap, setVideoStatusMap] = useState<{ [key: string]: boolean }>({});
+  const { loading } = useSelector((store: any) => store?.incidentACtionReducer)
+
 
   useEffect(() => {
     dispatch(incidentList(userId));
@@ -44,8 +47,10 @@ const Incidents = () => {
     }));
   };
 
+
   return (
     <View style={styles.container}>
+      <ModalLoader visible={loading} />
       {isEmpty ? (
         <View style={styles.noDataFoundContainer}>
           <Text style={styles.noDataFoundfontColor}>No Live Or {"\n"} Actioned {"\n"}Alerts</Text>
@@ -61,7 +66,7 @@ const Incidents = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => {
             if (index < incidentsData?.length) {
-              return <RenderIncidentItem item={item} index={index} videoStatusMap={videoStatusMap} toggleVideoStatus={toggleVideoStatus} incidentsData={incidentsData}/>
+              return <RenderIncidentItem item={item} index={index} videoStatusMap={videoStatusMap} toggleVideoStatus={toggleVideoStatus} incidentsData={incidentsData} />
             } else {
               return <RenderAttendedItem item={item} index={index - incidentsData?.length} attendedListData={attendedListData} />
             }

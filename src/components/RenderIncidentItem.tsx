@@ -8,6 +8,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import { useState } from "react";
 import { incidentListReload } from "../redux/actions/incidentsAction";
 import { useDispatch, useSelector } from "react-redux";
+import { BOTTOMATTENDEDSHEETOPEN, BOTTOMDISMISSSHEETOPEN } from "../redux/types";
 
 export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoStatus, incidentsData }: any) => {
     const toast = useToast();
@@ -16,24 +17,19 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
     const dispatch = useDispatch<any>()
     const { userData } = useSelector((store: any) => store.loginReducer);
     let userId = userData?.data?.user_id;
-    const [fetchingStatus, setFetchingStatus] = useState<{ [key: string]: number }>({});  
+    const [fetchingStatus, setFetchingStatus] = useState<{ [key: string]: number }>({});
 
     const autoReload = async (index: any) => {
         if (!incidentsData[index]?.video) {
-            // Increment fetching status count
             setFetchingStatus((prevStatus) => ({
                 ...prevStatus,
                 [index]: (prevStatus[index] || 0) + 1,
             }));
 
             try {
-                // Reload incident data
                 await dispatch(incidentListReload(userId));
 
-
-                // Check if the video is now available
                 if (incidentsData[index]?.video) {
-                    // Video found, stop reloading and show success message
                     toast.show("Video Found Successfully...", {
                         type: "success",
                         placement: "bottom",
@@ -41,13 +37,11 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
                         animationType: "slide-in",
                     });
 
-                    // Reset fetching status for this index
                     setFetchingStatus((prevStatus) => ({
                         ...prevStatus,
                         [index]: undefined,
                     }));
                 } else {
-                    // Video not found, retry after 2 seconds
                     setTimeout(() => autoReload(index), 2000);
                 }
             } catch (error) {
@@ -55,8 +49,6 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
             }
         }
     };
-
-
 
     return (
         <View style={styles.renderComponentContainer}>
@@ -120,10 +112,8 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
 
                 {incidentsData[index]?.video === null && (
                     <TouchableOpacity onPress={() => {
-                        console.log(index , "index");
-                        
                         autoReload(index)
-                        }}>
+                    }}>
                         <Text
                             style={[
                                 styles.belowImageTextReload,
@@ -139,10 +129,16 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
 
             </View>
             <View style={styles.belowTextButtons}>
-                <TouchableOpacity style={styles.buttonLeft}>
+                <TouchableOpacity style={styles.buttonLeft} onPress={() => dispatch({
+                    type: BOTTOMDISMISSSHEETOPEN,
+                    payload : item?.theft_id
+                })}>
                     <Text style={styles.buttonLefthText}>Dismiss</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonRight}>
+                <TouchableOpacity style={styles.buttonRight} onPress={() => dispatch({
+                    type: BOTTOMATTENDEDSHEETOPEN,
+                    payload : item?.theft_id
+                })}>
                     <Text style={styles.buttonRightText}>Attend</Text>
                 </TouchableOpacity>
             </View>
@@ -200,7 +196,8 @@ const styles = StyleSheet.create({
     incidentTextStyles: {
         paddingHorizontal: wp(2),
         paddingVertical: hp(1),
-        fontWeight: "bold"
+        fontSize: hp(1.8),
+        color: "#000"
     },
     incidentViewStyles: {
         marginHorizontal: wp(2),

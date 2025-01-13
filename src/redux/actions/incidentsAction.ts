@@ -46,7 +46,7 @@ export const attendedIncidentsList = (id: any) => {
             dispatch({
                 type: INCIDENTS_LOADING,
             })
-            const response = await AxiosInstance.post(`get_filled_active_theft_detail_new?user_id=${id}&limit=100`);
+            const response = await AxiosInstance.post(`get_filled_active_theft_detail_new?user_id=${id}&limit=40`);
             dispatch({
                 type: INCIDENT_ATTEND_LIST,
                 payload: response?.data?.data
