@@ -6,13 +6,13 @@ import { Route } from "../utils/routes";
 import { clockImage, squareImage } from "../utils/images";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useEffect, useState } from "react";
-import { incidentList, incidentListReload } from "../redux/actions/incidentsAction";
+import { incidentListReload } from "../redux/actions/incidentsAction";
 import { useDispatch, useSelector } from "react-redux";
 import { BOTTOMATTENDEDSHEETOPEN, BOTTOMDISMISSSHEETOPEN } from "../redux/types";
 
 export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoStatus }: any) => {
     const toast = useToast();
-    const uniqueId = item?.id || `${item.section}_${index}`;
+    const uniqueId = item?.theft_id || `${item.section}_${index}`;
     const videoStatus = videoStatusMap[uniqueId] || false;
     const dispatch = useDispatch<any>()
     const { userData } = useSelector((store: any) => store.loginReducer);
@@ -128,16 +128,21 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
 
             </View>
             <View style={styles.belowTextButtons}>
-                <TouchableOpacity style={styles.buttonLeft} onPress={() => dispatch({
-                    type: BOTTOMDISMISSSHEETOPEN,
-                    payload: item?.theft_id
-                })}>
+                <TouchableOpacity style={styles.buttonLeft} onPress={() => {
+                    dispatch({
+                        type: BOTTOMDISMISSSHEETOPEN,
+                        payload: item?.theft_id
+                    })
+                }
+                }>
                     <Text style={styles.buttonLefthText}>Dismiss</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonRight} onPress={() => dispatch({
-                    type: BOTTOMATTENDEDSHEETOPEN,
-                    payload: item?.theft_id
-                })}>
+                <TouchableOpacity style={styles.buttonRight} onPress={() => {
+                    dispatch({
+                        type: BOTTOMATTENDEDSHEETOPEN,
+                        payload: item?.theft_id
+                    })
+                }}>
                     <Text style={styles.buttonRightText}>Attend</Text>
                 </TouchableOpacity>
             </View>

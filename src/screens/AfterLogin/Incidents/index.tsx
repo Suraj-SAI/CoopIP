@@ -41,10 +41,9 @@ const Incidents = () => {
   }
 
   const toggleVideoStatus = (itemId: string) => {
-    setVideoStatusMap((prev) => ({
-      ...prev,
-      [itemId]: !prev[itemId]
-    }));
+    setVideoStatusMap({
+      [itemId]: true,
+    });
   };
 
 

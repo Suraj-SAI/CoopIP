@@ -6,6 +6,7 @@ import { BOTTOMATTENDEDSHEETCLOSE } from '../redux/types';
 import { basket, close, siren } from '../utils/images';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { incidenActivityAction } from '../redux/actions/incidentActivityAction';
+import { useToast } from 'react-native-toast-notifications';
 
 const data = [
   {
@@ -30,6 +31,7 @@ const AttendBottomSheet = ({ isVisible }: BottomSheetProps) => {
   const { userData } = useSelector((store: any) => store.loginReducer);
   const userId = userData?.data?.user_id;
   const { theftid } = useSelector((store: any) => store?.bottomeSheetReducer);
+  const toast = useToast();
 
   useEffect(() => {
     if (isVisible) {
@@ -94,6 +96,12 @@ const AttendBottomSheet = ({ isVisible }: BottomSheetProps) => {
                 type: BOTTOMATTENDEDSHEETCLOSE
               })
               await dispatch(incidenActivityAction(userId, theftid, "No, basket taken / payment made", 0))
+              toast.show('Attended : Basket taken / payment made', {
+                type: 'normal',
+                placement: 'bottom',
+                duration: 2000,
+                animationType: 'slide-in',
+              })
             }}>
               <Image source={basket} style={styles.attendBoxImge} />
               <Text style={styles.attendBoxText}>
@@ -106,6 +114,13 @@ const AttendBottomSheet = ({ isVisible }: BottomSheetProps) => {
                 type: BOTTOMATTENDEDSHEETCLOSE
               })
               dispatch(incidenActivityAction(userId, theftid, "Yes , a potential theft was detected", 0))
+
+              toast.show('Attended : Review outcome in the \n dashboard after 9 am tommorow.', {
+                type: 'normal',
+                placement: 'bottom',
+                duration: 2000,
+                animationType: 'slide-in',
+              })
             }}>
               <Image source={siren} style={styles.attendBoxImge} />
               <Text style={styles.attendBoxText}>

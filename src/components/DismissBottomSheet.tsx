@@ -6,6 +6,7 @@ import { BOTTOMDISMISSSHEETCLOSED } from '../redux/types';
 import { close, faultVideo, unClearVideo, videoFailed } from '../utils/images';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { incidenActivityAction } from '../redux/actions/incidentActivityAction';
+import { useToast } from 'react-native-toast-notifications';
 
 interface BottomSheetProps {
   isVisible: boolean;
@@ -17,6 +18,7 @@ const DismissBottomSheet = ({ isVisible }: BottomSheetProps) => {
   const { userData } = useSelector((store: any) => store.loginReducer);
   const userId = userData?.data?.user_id;
   const { theftid } = useSelector((store: any) => store?.bottomeSheetReducer);
+  const toast = useToast();
 
   const snapPoints = useMemo(() => ['70%'], []);
 
@@ -68,6 +70,12 @@ const DismissBottomSheet = ({ isVisible }: BottomSheetProps) => {
                 type: BOTTOMDISMISSSHEETCLOSED
               })
               await dispatch(incidenActivityAction(userId, theftid, "Video fails to load", 1))
+              toast.show('Incident dismissed : Video fails to load', {
+                type: 'normal',
+                placement: 'bottom',
+                duration: 2000,
+                animationType: 'slide-in',
+              })
             }}>
               <Image source={videoFailed} style={styles.attendBoxImge} />
               <Text style={styles.attendBoxText}>
@@ -80,6 +88,12 @@ const DismissBottomSheet = ({ isVisible }: BottomSheetProps) => {
                 type: BOTTOMDISMISSSHEETCLOSED
               })
               await dispatch(incidenActivityAction(userId, theftid, "Faulty video", 1))
+              toast.show('Incident dismissed : Faulty video', {
+                type: 'normal',
+                placement: 'bottom',
+                duration: 2000,
+                animationType: 'slide-in',
+              })
             }}>
               <Image source={faultVideo} style={styles.attendBoxImge} />
               <Text style={styles.attendBoxText}>
@@ -92,6 +106,12 @@ const DismissBottomSheet = ({ isVisible }: BottomSheetProps) => {
                 type: BOTTOMDISMISSSHEETCLOSED
               })
               await dispatch(incidenActivityAction(userId, theftid, "Unclear activity", 1))
+              toast.show('Incident dismissed : Unclear activity', {
+                type: 'normal',
+                placement: 'bottom',
+                duration: 2000,
+                animationType: 'slide-in',
+              })
             }}>
               <Image source={unClearVideo} style={styles.attendBoxImge} />
               <Text style={styles.attendBoxText}>
@@ -104,6 +124,12 @@ const DismissBottomSheet = ({ isVisible }: BottomSheetProps) => {
                 type: BOTTOMDISMISSSHEETCLOSED
               })
               await dispatch(incidenActivityAction(userId, theftid, "Colleague activity picking order", 1))
+              toast.show('Incident dismissed : Colleague activity / \n picking order', {
+                type: 'normal',
+                placement: 'bottom',
+                duration: 2000,
+                animationType: 'slide-in',
+              })
             }}>
               <Image source={faultVideo} style={styles.attendBoxImge} />
               <Text style={styles.attendBoxText}>
