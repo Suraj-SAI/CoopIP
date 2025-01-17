@@ -34,7 +34,6 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 
   if (user_id) {
     store.dispatch(incidentListReload(user_id, 0));
-    store.dispatch(incidentListReload(user_id, 0))
   }
 
   await notifee.displayNotification({

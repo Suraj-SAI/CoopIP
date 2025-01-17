@@ -1,9 +1,9 @@
-import { View, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TouchableOpacity, SafeAreaView, Image, AppStateStatus, AppState } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { styles } from './styles'
 import { profile } from '../../../utils/images'
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutAction } from '../../../redux/actions/loginAction';
+import { appOpenTimeAction, logoutAction } from '../../../redux/actions/loginAction';
 import Incidents from '../Incidents'
 import LiveStatus from '../LiveStatus';
 import { TabView, SceneMap } from 'react-native-tab-view';
@@ -12,6 +12,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import DeviceInfo from 'react-native-device-info';
 import AttendBottomSheet from '../../../components/AttendBottomSheet'
 import DismissBottomSheet from '../../../components/DismissBottomSheet'
+import { incidentListReload } from '../../../redux/actions/incidentsAction'
 
 const initialLayout = { width: Dimensions.get('window').width };
 
@@ -25,6 +26,7 @@ const HomePage = () => {
   const { incidentsData } = useSelector((store: any) => store.incidentReducer);
   let incidentsCounts = incidentsData?.length;
   const { attendedOpen, unAttendedOpen } = useSelector((store: any) => store?.bottomeSheetReducer);
+  const appState = useRef(AppState.currentState);
 
   const getAppVersion = async () => {
     const version = await DeviceInfo.getVersion();
@@ -41,6 +43,33 @@ const HomePage = () => {
     Incidents: Incidents,
     Live: LiveStatus,
   });
+
+  const update = async () => {
+    await dispatch(incidentListReload(userId, 0));
+    await dispatch(appOpenTimeAction(userId));
+  }
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (
+        appState.current === 'background' &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground, hitting incidents API.');
+        update();
+      }
+      appState.current = nextAppState;
+    };
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [])
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -73,7 +102,10 @@ const HomePage = () => {
               <TouchableOpacity
                 key={i}
                 style={{ flex: 1, padding: 10, alignItems: 'center', backgroundColor: i === props.navigationState.index ? '#f3f3f3' : '#fff', borderTopLeftRadius: wp(3), borderTopRightRadius: wp(3) }}
-                onPress={() => props.jumpTo(route.key)}
+                onPress={() => {
+                  props.jumpTo(route.key);
+                  update()
+                }}
               >
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text style={{ color: '#000', fontSize: hp(2.3) }}>

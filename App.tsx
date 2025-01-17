@@ -41,7 +41,7 @@ const App = () => {
       let user_id = await Storage.getData("user_id");
 
       if (user_id) {
-        store.dispatch(incidentList(user_id , 1));
+        store.dispatch(incidentList(user_id , 0));
       }
 
       await notifee.displayNotification({

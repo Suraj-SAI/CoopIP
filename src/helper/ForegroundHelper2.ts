@@ -13,12 +13,11 @@ export async function ForegroundHandler2(data: any, state: string) {
     });
 
     let user_id = await Storage.getData("user_id");
-    
-    
-      if (user_id) {
-        store.dispatch(incidentListReload(user_id , 0));
-        store.dispatch(incidentListReload(user_id , 0))
-      }
+
+
+    if (user_id) {
+        store.dispatch(incidentListReload(user_id, 0));
+    }
 
     await notifee.displayNotification({
         title: data?.notification?.title,

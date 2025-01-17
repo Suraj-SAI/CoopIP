@@ -22,6 +22,7 @@ export const ipLoginAction = (retryCount = 3, retryDelay = 5000) => {
                         payload: response?.data,
                     });
                     await Storage.saveData("user_id", JSON.stringify(response?.data?.data?.user_id));
+                    dispatch(appOpenTimeAction(response?.data?.data?.user_id))
                     Toast.show("Login Success !!!", 2000, {
                         backgroundColor: "green"
                     });
@@ -47,6 +48,16 @@ export const ipLoginAction = (retryCount = 3, retryDelay = 5000) => {
         await fetchAndLogin();
     };
 };
+
+export const appOpenTimeAction = (id: any) => {
+    return async (dispatch: any) => {
+        try {
+            AxiosInstance.post(`/update_app_open_time?user_id=${id}`)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
 
 
 export const logoutAction = (id: any) => {
