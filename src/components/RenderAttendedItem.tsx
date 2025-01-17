@@ -19,7 +19,7 @@ export const RenderAttendedItem = ({ item, index, attendedListData }: any) => {
                 <Image source={item?.dismiss_status === 1 ? dustbinImage : checkedImage} style={styles.dustbinImage} />
                 <Text style={styles.dismisstimeComment}>{item?.dismiss_status === 1 ? "Dismissed" : "Attended"} today at {item?.refill_datetime?.split(" ")[1]?.split(".")[0]}</Text>
             </View>
-            <Text style={styles.commentText}>{item?.comment}</Text>
+            <Text style={styles.commentText}>{item?.comment === "Yes , a potential theft was detected" ? "Outcome is pending" : item?.comment}</Text>
             <View style={styles.separator} />
         </View>
     );
@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     color: {
         color: 'black',
         marginHorizontal: wp(2),
-        fontSize: hp(2.5),
+        fontSize: hp(2.8),
     },
     incidentText: {
         color: "#000",
@@ -54,24 +54,24 @@ export const styles = StyleSheet.create({
         marginHorizontal: wp(2),
         fontSize: hp(2.5),
         fontWeight: "bold",
-        marginTop: hp(2)
+        marginTop: hp(2.1)
     },
     dateText: {
         marginHorizontal: wp(2),
         textAlign: "right",
         color: "#000",
-        fontSize: hp(1.8)
+        fontSize: hp(2.1)
     },
     commentText: {
         marginHorizontal: wp(2),
         color: "#000",
-        fontSize: hp(1.8),
+        fontSize: hp(2.1),
         marginBottom: hp(2)
     },
     dismisstimeComment: {
-        marginHorizontal: wp(1),
+        marginHorizontal: wp(2),
         color: "#000",
-        fontSize: hp(1.8),
+        fontSize: hp(2.1),
     },
     dustbinView: {
         flexDirection: "row",
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
         alignItems: "center"
     },
     dustbinImage: {
-        height: hp(2),
-        width: hp(2)
+        height: hp(2.1),
+        width: hp(2.1)
     }
 })

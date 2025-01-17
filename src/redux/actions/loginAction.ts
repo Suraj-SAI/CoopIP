@@ -21,6 +21,7 @@ export const ipLoginAction = (retryCount = 3, retryDelay = 5000) => {
                         type: LOGIN_SUCCESS,
                         payload: response?.data,
                     });
+                    await Storage.saveData("user_id", JSON.stringify(response?.data?.data?.user_id));
                     Toast.show("Login Success !!!", 2000, {
                         backgroundColor: "green"
                     });
@@ -38,7 +39,7 @@ export const ipLoginAction = (retryCount = 3, retryDelay = 5000) => {
                     });
                     dispatch({ type: LOGIN_ERROR });
                     dispatch({
-                        type : LOGOUT_SUCCESS
+                        type: LOGOUT_SUCCESS
                     })
                 }
             }

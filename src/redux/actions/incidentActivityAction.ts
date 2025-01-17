@@ -14,7 +14,7 @@ export const incidenActivityAction = (id: any, theftid: any, remarks: any, statu
                     type: INCIDENT_ACTION_SUCCESS,
                 })
                 dispatch(attendedIncidentsList(id));
-                dispatch(incidentListReload(id))
+                dispatch(incidentListReload(id , 0))
             }
         } catch (error) {
             dispatch({

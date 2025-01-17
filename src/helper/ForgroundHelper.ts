@@ -1,4 +1,7 @@
 import notifee, { EventType, AndroidImportance } from '@notifee/react-native';
+import { store } from '../redux/store';
+import { incidentListReload } from '../redux/actions/incidentsAction';
+import * as Storage from '../helper/AsyncStorageConfig';
 
 export async function ForegroundHandler(data: any, state: string) {
   await notifee.requestPermission();
@@ -7,15 +10,21 @@ export async function ForegroundHandler(data: any, state: string) {
     id: 'default channel',
     name: 'CCTV Alerts',
     importance: AndroidImportance.HIGH,
-    sound : "default"
+    sound: "default"
   });
 
+  let user_id = await Storage.getData("user_id");
+
+  if (user_id) {
+    store.dispatch(incidentListReload(user_id , 0));
+  }
+
   await notifee.displayNotification({
-    title: data?.notification?.title,
-    body: data?.notification?.body,
+    title: data?.data?.title,
+    body: data?.data?.body,
     android: {
       channelId,
-      sound : "default",
+      sound: "default",
       pressAction: {
         id: `${state}`,
       },

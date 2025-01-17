@@ -57,7 +57,7 @@ public class MainActivity extends ReactActivity {
           .build();
 
       notificationChannel.setSound(
-          Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/buzzer"),
+          Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/dings"),
           att
       );
       notificationChannel.enableVibration(true);

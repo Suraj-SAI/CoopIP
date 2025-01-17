@@ -1,26 +1,43 @@
 {
   "project_info": {
-    "project_number": "576499702486",
-    "project_id": "saialerts-6e7da",
-    "storage_bucket": "saialerts-6e7da.firebasestorage.app"
+    "project_number": "136251428598",
+    "project_id": "sai-analysis-69ce6",
+    "storage_bucket": "sai-analysis-69ce6.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:576499702486:android:5181ff6ad69b86666b8777",
+        "mobilesdk_app_id": "1:136251428598:android:f8043ee48cbc9531f0a6d7",
         "android_client_info": {
           "package_name": "com.saigroups.saialerts"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "136251428598-q3oegl17o2biumtlaba264nkrmovrs1a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCEUY0dU4U9ZAZnh-m26rojfLtK9f45b2E"
+          "current_key": "AIzaSyAggN-q6omHXUeXIUAoelvSjjz5mEdUtUU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136251428598-q3oegl17o2biumtlaba264nkrmovrs1a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "136251428598-uv263gc14fto2eri5m5bc7g9c76q1110.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sai.alerts"
+              }
+            }
+          ]
         }
       }
     }

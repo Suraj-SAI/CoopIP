@@ -221,19 +221,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     elevation: 5,
     alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: hp(1.5)
+    paddingVertical: hp(1.5),
+    borderRadius : wp(2)
   },
 
   attendBoxImge: {
     height: hp(4),
     width: hp(4),
-    marginRight: wp(2.5)
+    marginRight: wp(2.5),
+    marginLeft : wp(5)
   },
 
   attendBoxText: {
-    fontSize: hp(2.1),
-    color: "#000"
+    fontSize: hp(2.5),
+    color: "#000",
+    marginLeft : wp(3)
   }
 
 });

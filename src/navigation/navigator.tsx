@@ -8,6 +8,7 @@ import AfterLoginNavigator from './afterLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { ipLoginAction } from '../redux/actions/loginAction';
 import LoaderScreen from '../components/LoaderScreen';
+import { welcomeAction } from '../redux/actions/welcomeAction';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,16 +17,17 @@ const Navigator = () => {
     const { isLoggedIn, isLoading } = useSelector((store: any) => store.loginReducer);
 
     const iplogin = async () => {
-        await dispatch(ipLoginAction())
+        await dispatch(ipLoginAction());
+        await dispatch(welcomeAction());
     }
 
     useEffect(() => {
-        iplogin();        
+        iplogin();
     }, [])
 
     if (isLoading) {
         return (
-            <LoaderScreen visible={isLoading}/>
+            <LoaderScreen visible={isLoading} />
         );
     }
 

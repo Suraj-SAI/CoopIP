@@ -17,8 +17,9 @@ const IpLogin = () => {
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
+
       if (
-        appState.current.match(/inactive|background/) &&
+        appState.current === 'background' &&
         nextAppState === 'active'
       ) {
         console.log('App has come to the foreground, hitting login API.');
@@ -26,7 +27,6 @@ const IpLogin = () => {
       }
       appState.current = nextAppState;
     };
-
     const subscription = AppState.addEventListener(
       'change',
       handleAppStateChange

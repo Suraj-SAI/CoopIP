@@ -5,7 +5,7 @@ import { navigate } from "../services/navigationService";
 import { Route } from "../utils/routes";
 import { clockImage, squareImage } from "../utils/images";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { incidentListReload } from "../redux/actions/incidentsAction";
 import { useDispatch, useSelector } from "react-redux";
 import { BOTTOMATTENDEDSHEETOPEN, BOTTOMDISMISSSHEETOPEN } from "../redux/types";
@@ -17,6 +17,7 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
     const dispatch = useDispatch<any>()
     const { userData } = useSelector((store: any) => store.loginReducer);
     const { incidentsData } = useSelector((store: any) => store.incidentReducer);
+    const toastCooldown = useRef(false);
 
     let userId = userData?.data?.user_id;
     const [counter, setCounter] = useState<number>(0);
@@ -27,7 +28,7 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
         let interval: any;
         if (isRunning) {
             interval = setInterval(() => {
-                dispatch(incidentListReload(userId))
+                dispatch(incidentListReload(userId , 0))
                 setCounter(prev => prev + 1);
             }, 2000);
         }
@@ -84,12 +85,18 @@ export const RenderIncidentItem = ({ item, index, videoStatusMap, toggleVideoSta
                     style={styles.renderComponentImageBox}
                     onPress={() => {
                         if (!item?.video) {
-                            toast.show('Video failed to load. Tap reload to try again.', {
-                                type: 'normal',
-                                placement: 'bottom',
-                                duration: 2000,
-                                animationType: 'slide-in',
-                            });
+                            if (!toastCooldown.current) {
+                                toastCooldown.current = true;
+                                toast.show('Video failed to load. Tap reload to try again.', {
+                                    type: 'normal',
+                                    placement: 'bottom',
+                                    duration: 2000,
+                                    animationType: 'slide-in',
+                                });
+                                setTimeout(() => {
+                                    toastCooldown.current = false;
+                                }, 2000);
+                            }
                         } else {
                             toggleVideoStatus(uniqueId);
                         }
@@ -195,12 +202,12 @@ const styles = StyleSheet.create({
     color: {
         color: 'black',
         marginHorizontal: wp(2),
-        fontSize: hp(2.5)
+        fontSize: hp(2.8)
     },
     incidentTextStyles: {
         paddingHorizontal: wp(2),
         paddingVertical: hp(1),
-        fontSize: hp(1.8),
+        fontSize: hp(2.1),
         color: "#000"
     },
     incidentViewStyles: {
@@ -221,7 +228,7 @@ const styles = StyleSheet.create({
         marginHorizontal: wp(2),
         textAlign: "right",
         color: "#000",
-        fontSize: hp(1.8)
+        fontSize: hp(2.1)
     },
     belowIageTextView: {
         flexDirection: "row",
@@ -229,13 +236,13 @@ const styles = StyleSheet.create({
         marginHorizontal: wp(2)
     },
     belowImageText: {
-        fontSize: hp(1.8),
+        fontSize: hp(2.1),
         color: "#000"
     },
     belowImageTextReload: {
         color: "green",
         textDecorationLine: "underline",
-        fontSize: hp(1.8),
+        fontSize: hp(2.1),
         marginLeft: wp(1.5),
         fontWeight: "bold"
     },
@@ -266,12 +273,11 @@ const styles = StyleSheet.create({
         width: wp(42),
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: hp(1.5),
-        borderRadius: wp(2)
+        borderRadius: wp(2),
     },
 
     buttonRightText: {
         color: "#fff",
-        fontSize: hp(2.1),
+        fontSize: hp(2.5),
     }
 })

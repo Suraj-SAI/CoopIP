@@ -6,6 +6,6 @@
         </trust-anchors>
     </base-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">https://saivalentine.com</domain>
+        <domain includeSubdomains="true">https://coopapi.saivalentine.com</domain>
     </domain-config>
 </network-security-config>

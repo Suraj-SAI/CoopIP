@@ -1,13 +1,13 @@
 import { AxiosInstance } from "../../services/apiService"
 import { INCIDENT_ATTEND_LIST, INCIDENT_ATTEND_LIST_ERROR, INCIDENTS_ERROR, INCIDENTS_LOADING, INCIDENTS_SUCCESS } from "../types";
 
-export const incidentList = (id: any) => {
+export const incidentList = (id: any , status : any) => {
     return async (dispatch: any) => {
         try {
             dispatch({
                 type: INCIDENTS_LOADING,
             })
-            const response = await AxiosInstance.post(`/get_active_theft_detail_new?user_id=${id}&background_status=0`);            
+            const response = await AxiosInstance.post(`/get_active_theft_detail_new?user_id=${id}&background_status=${status}`);            
             if (response?.status == 200) {
                 dispatch({
                     type: INCIDENTS_SUCCESS,
@@ -22,10 +22,10 @@ export const incidentList = (id: any) => {
     }
 }
 
-export const incidentListReload = (id: any) => {
+export const incidentListReload = (id: any , status : any) => {
     return async (dispatch: any) => {
         try {
-            const response = await AxiosInstance.post(`/get_active_theft_detail_new?user_id=${id}&background_status=0`);            
+            const response = await AxiosInstance.post(`/get_active_theft_detail_new?user_id=${id}&background_status=${status}`);            
             if (response?.status == 200) {
                 dispatch({
                     type: INCIDENTS_SUCCESS,
